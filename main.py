@@ -6,8 +6,9 @@ import numpy as np
 
 import cox_embed  # импортируем скрипт с функцией встраивания информации в контейнер
 
-No = 1000
 IMAGE_NAME = "sample_image.png"  # указываем здесь наименование изображения
+No = 1000  # длина последовательности Omega
+
 
 # =========================================================================
 # получаем полутоновое растровое изображение - исходный пустой контейнер
@@ -32,7 +33,7 @@ EMPTY_CONTAINER = rgb2gray(img)
 
 
 def cox_gen_sig(no):
-    """Генерация последовательности чисел, длиной No
+    """Генерация последовательности чисел, длиной no
 
     Данная функция позволяет сгенерировать последовательность из псевдослучайных чисел,
     которые распределены по гауссовскому закону
@@ -42,22 +43,22 @@ def cox_gen_sig(no):
     rgs = np.random.randn(
         no
     )  # RGS имеет тип 'numpy.ndarray', который позволяет хранить "большие" значения
-    # RGS имеет класс numpy.ndarray - битовый массив, без ограничения длины значени
+    # RGS имеет класс numpy.ndarray - битовый массив, без ограничения длины значений
     # преобразуем его в стандартный список list (индексированную последовательность значений) функ. tolist()
-    return rgs.tolist()  # возвращаем стандартный список list
+    return rgs  # tolist() возвращаем стандартный список list
 
 
-gen_list = cox_gen_sig(
+OMEGA = cox_gen_sig(
     No
 )  # генерируем случайную последовательность для встраивания в контейнер
 # print(gen_list)  # выведем сгенирированную последовательность
 # myList = [round(x, 2) for x in gen_list]  # округлим до сотых (для первого примера встраивания)
 # print(myList)
 
-
-FULL_CONTAINER = cox_embed.cox_embed(EMPTY_CONTAINER, 5, 1)
+ALPHA = 0.42
+FULL_CONTAINER = cox_embed.cox_embed(EMPTY_CONTAINER, OMEGA, ALPHA)
 
 # выводим полученное после преобразований изображение-контейнер
 plt.imshow(FULL_CONTAINER, cmap=plt.get_cmap("gray"), vmin=0, vmax=1)
-plt.savefig("FULL_CONTAINER.png")
+plt.savefig("FULL_CONTAINER.png")  # сохраним заполненный контейнер в файл FULL_CONTAINER.png
 plt.show()
