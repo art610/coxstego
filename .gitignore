@@ -2,3 +2,6 @@ venv/
 .idea/
 .ipynb_checkpoints/
 temp/
+EMPTY_CONTAINER.png
+FULL_CONTAINER.png
+max_elements.txt
