@@ -4,6 +4,7 @@ import matplotlib.image as mpimg  # модуль для загрузки исх�
 import matplotlib.pyplot as plt  # модуль для отрисовки полотна с изображением
 import numpy as np
 
+import cox_check  # импортируем модуль для проверки работы алгоритма
 import cox_embed  # импортируем скрипт с функцией встраивания информации в контейнер
 
 IMAGE_NAME = "sample_image.png"  # указываем здесь наименование изображения
@@ -56,9 +57,18 @@ OMEGA = cox_gen_sig(
 # print(myList)
 
 ALPHA = 0.42
-FULL_CONTAINER = cox_embed.cox_embed(EMPTY_CONTAINER, OMEGA, ALPHA)
+EMBED_RESULT = cox_embed.cox_embed(EMPTY_CONTAINER, OMEGA, ALPHA)
+FULL_CONTAINER = EMBED_RESULT[0]  # заполненный контейнер
+MODIFIED_ELEMENTS = EMBED_RESULT[
+    1
+]  # матрица из спектральных компонент, которые были изменены
 
 # выводим полученное после преобразований изображение-контейнер
 plt.imshow(FULL_CONTAINER, cmap=plt.get_cmap("gray"), vmin=0, vmax=1)
-plt.savefig("FULL_CONTAINER.png")  # сохраним заполненный контейнер в файл FULL_CONTAINER.png
+plt.savefig(
+    "FULL_CONTAINER.png"
+)  # сохраним заполненный контейнер в файл FULL_CONTAINER.png
 plt.show()
+
+# проверяем значения
+cox_check.algorithm_check(MODIFIED_ELEMENTS, EMPTY_CONTAINER, FULL_CONTAINER, OMEGA)

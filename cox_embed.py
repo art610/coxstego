@@ -96,13 +96,13 @@ def cox_embed(container, omega, alpha):
 
     # запишем найденные максимальные значения в отдельный файл max_elements.txt
 
-    with open('max_elements.txt', 'w') as ouf2:
+    with open("max_elements.txt", "w") as ouf2:
         for el1 in max_elements_in_matrix:
-            ouf2.write(str(el1) + '\n')
+            ouf2.write(str(el1) + "\n")
 
     # ====================================================================================
     # проводим обратное ДКП и формируем заполненный контейнер
     # обратное косинусное преобразование
     full_container = fftpack.idct(fftpack.idct(dct.T, norm="ortho").T, norm="ortho")
 
-    return full_container
+    return full_container, max_elements_in_matrix
